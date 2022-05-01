@@ -7,4 +7,6 @@ userRouter.get('/', validateAuthorization, userController.index);
 
 userRouter.post('/', validateUser, userController.register);
 
+userRouter.get('/:id', validateAuthorization, userController.getUser);
+
 module.exports = userRouter;

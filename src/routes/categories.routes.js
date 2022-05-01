@@ -9,4 +9,6 @@ categoriesRouter.post('/', [
   categoriesController.registerCategory,
 ]);
 
+categoriesRouter.get('/', validateAuthorization, categoriesController.getCategories);
+
 module.exports = categoriesRouter;

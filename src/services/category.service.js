@@ -6,6 +6,13 @@ async function addCategory({ name: categoryName }) {
   return { id, name };
 }
 
+async function index() {
+  const categories = await Category.findAll();
+
+  return categories;
+}
+
 module.exports = {
   addCategory,
+  index,
 };

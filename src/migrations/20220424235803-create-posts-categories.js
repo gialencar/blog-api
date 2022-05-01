@@ -10,7 +10,6 @@ module.exports = {
           model: 'BlogPosts',
           key: 'id',
         },
-        primaryKey: true,
         onDelete: 'CASCADE',
       },
       categoryId: {
@@ -20,7 +19,6 @@ module.exports = {
           model: 'Categories',
           key: 'id',
         },
-        primaryKey: true,
       },
     });
   },

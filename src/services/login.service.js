@@ -8,7 +8,7 @@ async function generateAccessToken({ email, password }) {
   const user = await User.findOne({ where: { email } });
 
   if (user && password === user.password) {
-    return jwt.sign({ email }, JWT_SECRET, { expiresIn: '180' });
+    return jwt.sign({ email }, JWT_SECRET, { expiresIn: '1800s' });
   }
 }
 

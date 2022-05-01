@@ -30,8 +30,17 @@ async function getUser(req, res) {
   res.status(200).json(user);
 }
 
+async function deleteUser(req, res) {
+  const { authorization } = req.headers;
+
+  await userService.deleteUser(authorization.split(' ')[1] || authorization);
+
+  res.status(204).end();
+}
+
 module.exports = {
   index,
   register,
   getUser,
+  deleteUser,
 };

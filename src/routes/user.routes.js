@@ -9,4 +9,6 @@ userRouter.post('/', validateUser, userController.register);
 
 userRouter.get('/:id', validateAuthorization, userController.getUser);
 
+userRouter.delete('/me', validateAuthorization, userController.deleteUser);
+
 module.exports = userRouter;

@@ -20,7 +20,14 @@ async function register({ displayName, email, password, image }) {
   return token;
 }
 
+async function findById(id) {
+  const user = await User.findByPk(id);
+
+  return user || null;
+}
+
 module.exports = {
   index,
   register,
+  findById,
 };

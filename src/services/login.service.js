@@ -5,7 +5,7 @@ const { User } = require('../models');
 const { JWT_SECRET } = process.env;
 
 function generateToken(payload) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '1800s' });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '4h' });
 }
 
 function validateToken(token) {

@@ -4,19 +4,24 @@ const { User } = require('../models');
 
 const { JWT_SECRET } = process.env;
 
-async function generateAccessToken({ email, password }) {
-  const user = await User.findOne({ where: { email } });
-
-  if (user && password === user.password) {
-    return jwt.sign({ email }, JWT_SECRET, { expiresIn: '1800s' });
-  }
+function generateToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '1800s' });
 }
 
 function validateToken(token) {
   return jwt.verify(token, JWT_SECRET, {});
 }
 
+async function authenticate({ email, password }) {
+  const user = await User.findOne({ where: { email } });
+
+  if (user && password === user.password) {
+    return generateToken({ email });
+  }
+}
+
 module.exports = {
-  generateAccessToken,
+  authenticate,
   validateToken,
+  generateToken,
 };

@@ -1,5 +1,6 @@
 const express = require('express');
 const errorHandler = require('./src/middlewares/errorHandler');
+const categoriesRouter = require('./src/routes/categories.routes');
 const loginRouter = require('./src/routes/login.routes');
 const userRouter = require('./src/routes/user.routes');
 require('dotenv').config();
@@ -15,6 +16,8 @@ app.get('/', (_request, response) => {
 app.use('/login', loginRouter);
 
 app.use('/user', userRouter);
+
+app.use('/categories', categoriesRouter);
 
 app.use(errorHandler);
 

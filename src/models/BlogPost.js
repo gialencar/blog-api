@@ -22,6 +22,7 @@ const attributes = {
       model: 'Users',
       key: 'id',
     },
+    onDelete: 'CASCADE',
   },
   published: {
     type: DataTypes.DATE,

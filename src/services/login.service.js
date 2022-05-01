@@ -12,6 +12,10 @@ function validateToken(token) {
   return jwt.verify(token, JWT_SECRET, {});
 }
 
+function decodeToken(token) {
+  return jwt.decode(token);
+}
+
 async function authenticate({ email, password }) {
   const user = await User.findOne({ where: { email } });
 
@@ -24,4 +28,5 @@ module.exports = {
   authenticate,
   validateToken,
   generateToken,
+  decodeToken,
 };

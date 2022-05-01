@@ -12,6 +12,11 @@ async function generateAccessToken({ email, password }) {
   }
 }
 
+function validateToken(token) {
+  return jwt.verify(token, JWT_SECRET, {});
+}
+
 module.exports = {
   generateAccessToken,
+  validateToken,
 };

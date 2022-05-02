@@ -32,9 +32,16 @@ async function deleteUser(token) {
   await User.destroy({ where: { email } });
 }
 
+async function findByToken(token) {
+  const { email } = decodeToken(token);
+  const user = await User.findOne({ where: { email } });
+  return user;
+}
+
 module.exports = {
   index,
   register,
   findById,
   deleteUser,
+  findByToken,
 };

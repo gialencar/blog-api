@@ -1,23 +1,17 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable comma-dangle */
 const { Sequelize, sequelize } = require('../models');
-const logger = require('../logger');
-const { BlogPost, Category, User } = require('../models');
-const { decodeToken } = require('./login.service');
+const { BlogPost } = require('../models');
+const userService = require('./user.service');
+const categoryService = require('./category.service');
 
 async function createPost({ title, content, categoryIds, token }) {
-  const result = {};
   // descobrir id do usuário
-  const { email } = decodeToken(token);
-  const { id: userId } = await User.findOne({ where: { email } });
+  const { id: userId } = await userService.findByToken(token);
 
-  const { rows, count } = await Category.findAndCountAll({ where: { id: categoryIds } });
-  if (count !== categoryIds.length) {
-    result.error = { message: '"categoryIds" not found' };
-  }
+  // verifica se todas categorias existem
+  const { allCategoriesExist, rows } = await categoryService.verifyCategoriesExist(categoryIds);
+  if (!allCategoriesExist) return { error: { message: '"categoryIds" not found' } };
 
-  const tr = await sequelize.transaction();
-  try {
+  const result = await sequelize.transaction(async (tr) => {
     // criar post
     const post = await BlogPost.create(
       {
@@ -27,19 +21,13 @@ async function createPost({ title, content, categoryIds, token }) {
         published: Sequelize.literal('CURRENT_TIMESTAMP'),
         updated: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-      { transaction: tr }
+      { transaction: tr },
     );
-
+    // add categorias
     await post.addCategory(rows, { through: 'categories', transaction: tr });
 
-    await tr.commit();
-
-    result.post = { id: post.id, userId: 1, title, content };
-  } catch (error) {
-    logger.error(error);
-    await tr.rollback();
-  }
-
+    return { post: { id: post.id, userId: 1, title, content } };
+  });
   return result;
 }
 

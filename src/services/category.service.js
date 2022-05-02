@@ -12,7 +12,17 @@ async function index() {
   return categories;
 }
 
+async function verifyCategoriesExist(categoryIds) {
+  const { rows, count } = await Category.findAndCountAll({ where: { id: categoryIds } });
+
+  return {
+    allCategoriesExist: count === categoryIds.length,
+    rows,
+  };
+}
+
 module.exports = {
   addCategory,
   index,
+  verifyCategoriesExist,
 };

@@ -31,6 +31,18 @@ async function createPost({ title, content, categoryIds, token }) {
   return result;
 }
 
+async function index() {
+  const posts = await BlogPost.findAll({
+    include: [
+      { association: 'user', attributes: { exclude: 'password' } },
+      { association: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return posts;
+}
+
 module.exports = {
   createPost,
+  index,
 };

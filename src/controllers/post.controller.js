@@ -19,6 +19,13 @@ async function createPost(req, res) {
   res.status(201).json(post);
 }
 
+async function getAll(req, res) {
+  const posts = await postService.index();
+
+  res.status(200).json(posts);
+}
+
 module.exports = {
   createPost,
+  getAll,
 };

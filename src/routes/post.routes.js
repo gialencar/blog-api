@@ -5,4 +5,6 @@ const postController = require('../controllers/post.controller');
 
 postRouter.post('/', validateAuthorization, validatePost, postController.createPost);
 
+postRouter.get('/', validateAuthorization, postController.getAll);
+
 module.exports = postRouter;

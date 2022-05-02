@@ -42,7 +42,19 @@ async function index() {
   return posts;
 }
 
+async function getById(id) {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { association: 'user', attributes: { exclude: 'password' } },
+      { association: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return post;
+}
+
 module.exports = {
   createPost,
   index,
+  getById,
 };

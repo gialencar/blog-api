@@ -7,4 +7,6 @@ postRouter.post('/', validateAuthorization, validatePost, postController.createP
 
 postRouter.get('/', validateAuthorization, postController.getAll);
 
+postRouter.get('/:id', validateAuthorization, postController.getPostById);
+
 module.exports = postRouter;

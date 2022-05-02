@@ -1,5 +1,5 @@
 const logger = require('../logger');
-const { loginService } = require('../services');
+const { validateToken } = require('../utils/auth.util');
 
 function validateAuthorization(req, res, next) {
   const {
@@ -12,7 +12,7 @@ function validateAuthorization(req, res, next) {
 
   try {
     const token = authorization.split(' ')[1] || authorization;
-    loginService.validateToken(token);
+    validateToken(token);
     next();
   } catch (error) {
     logger.warn(error);

@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const loginService = require('./login.service');
+const { decodeToken, generateToken } = require('../utils/auth.util');
 
 async function index() {
   const users = await User.findAll({
@@ -15,7 +15,7 @@ async function register({ displayName, email, password, image }) {
 
   await User.create({ displayName, email, password, image });
 
-  const token = loginService.generateToken({ email });
+  const token = generateToken({ email });
 
   return token;
 }
@@ -27,7 +27,7 @@ async function findById(id) {
 }
 
 async function deleteUser(token) {
-  const { email } = loginService.decodeToken(token);
+  const { email } = decodeToken(token);
 
   await User.destroy({ where: { email } });
 }

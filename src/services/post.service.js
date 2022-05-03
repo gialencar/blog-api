@@ -81,7 +81,6 @@ async function search(searchTerm) {
       { title: { [Op.like]: `%${searchTerm}%` } },
       { content: { [Op.like]: `%${searchTerm}%` } },
     ),
-    attributes: { exclude: ['UserId'] },
     include: [
       {
         association: 'user',

@@ -6,6 +6,8 @@ const validatePostOwnership = require('../middlewares/validatePostOwnership');
 
 postRouter.post('/', validateAuthorization, validatePost, postController.createPost);
 
+postRouter.get('/search', validateAuthorization, postController.searchPost);
+
 postRouter.get('/', validateAuthorization, postController.getAll);
 
 postRouter.get('/:id', validateAuthorization, postController.getPostById);

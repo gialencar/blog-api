@@ -58,10 +58,19 @@ async function editPost(req, res) {
   res.status(200).json(post);
 }
 
+async function searchPost(req, res) {
+  const { q } = req.query;
+
+  const posts = await postService.search(q);
+  // logger.info(posts);
+  res.status(200).json(posts);
+}
+
 module.exports = {
   createPost,
   getAll,
   getPostById,
   deletePost,
   editPost,
+  searchPost,
 };

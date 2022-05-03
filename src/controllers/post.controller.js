@@ -1,4 +1,4 @@
-const { postService, userService } = require('../services');
+const { postService } = require('../services');
 
 async function createPost(req, res) {
   const { title, content, categoryIds } = req.body;
@@ -39,22 +39,23 @@ async function getPostById(req, res) {
 
 async function deletePost(req, res) {
   const { id } = req.params;
-  const { authorization } = req.headers;
-  const token = authorization.split(' ')[1] || authorization;
 
-  const user = await userService.findByToken(token);
-  const post = await postService.getById(id);
-
-  if (!post) {
-    return res.status(404).json({ message: 'Post does not exist' });
-  }
-
-  if (user.id !== post.userId) {
-    return res.status(401).json({ message: 'Unauthorized user' });
-  }
   await postService.deletePostById(id);
 
   res.status(204).end();
+}
+
+async function editPost(req, res) {
+  const { id } = req.params;
+  const { title, content, categoryIds } = req.body;
+
+  if (categoryIds) return res.status(400).json({ message: 'Categories cannot be edited' });
+  if (!title) return res.status(400).json({ message: '"title" is required' });
+  if (!content) return res.status(400).json({ message: '"content" is required' });
+
+  const post = await postService.editPost({ id, title, content });
+
+  res.status(200).json(post);
 }
 
 module.exports = {
@@ -62,4 +63,5 @@ module.exports = {
   getAll,
   getPostById,
   deletePost,
+  editPost,
 };

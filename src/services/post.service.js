@@ -59,9 +59,25 @@ async function deletePostById(id) {
   });
 }
 
+async function editPost({ id, title, content }) {
+  await BlogPost.update({ title, content }, { where: { id }, returning: true });
+  const post = BlogPost.findOne({
+    where: { id },
+    attributes: { exclude: ['published', 'updated'] },
+    include: [
+      {
+        association: 'categories',
+        through: { attributes: [] },
+      },
+    ],
+  });
+  return post;
+}
+
 module.exports = {
   createPost,
   index,
   getById,
   deletePostById,
+  editPost,
 };

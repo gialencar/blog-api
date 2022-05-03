@@ -12,4 +12,6 @@ postRouter.get('/:id', validateAuthorization, postController.getPostById);
 
 postRouter.delete('/:id', validateAuthorization, validatePostOwnership, postController.deletePost);
 
+postRouter.put('/:id', validateAuthorization, validatePostOwnership, postController.editPost);
+
 module.exports = postRouter;

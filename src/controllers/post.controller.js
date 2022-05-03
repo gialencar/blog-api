@@ -1,4 +1,4 @@
-const { postService } = require('../services');
+const { postService, userService } = require('../services');
 
 async function createPost(req, res) {
   const { title, content, categoryIds } = req.body;
@@ -37,8 +37,29 @@ async function getPostById(req, res) {
   res.status(200).json(post);
 }
 
+async function deletePost(req, res) {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  const token = authorization.split(' ')[1] || authorization;
+
+  const user = await userService.findByToken(token);
+  const post = await postService.getById(id);
+
+  if (!post) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
+
+  if (user.id !== post.userId) {
+    return res.status(401).json({ message: 'Unauthorized user' });
+  }
+  await postService.deletePostById(id);
+
+  res.status(204).end();
+}
+
 module.exports = {
   createPost,
   getAll,
   getPostById,
+  deletePost,
 };

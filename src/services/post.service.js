@@ -53,8 +53,15 @@ async function getById(id) {
   return post;
 }
 
+async function deletePostById(id) {
+  await BlogPost.destroy({
+    where: { id },
+  });
+}
+
 module.exports = {
   createPost,
   index,
   getById,
+  deletePostById,
 };
